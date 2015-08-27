@@ -78,20 +78,22 @@ func getDirectoriesBiggerThan(size int64, root string) (result map[string]string
 // GetDirectoryStructure returns hierarchical representation of os's directories,
 // as well as their sizes. Depth of walk is set by maxDepth constant.
 func GetDirectoryStructure(fullpath string) (result Directory, err error) {
-	return getDirectoryStructureWithDepth(fullpath, maxDepth)
+	return GetDirectoryStructureWithDepth(fullpath, maxDepth)
 }
 
-func getDirectoryStructureWithDepth(fullpath string, depth int) (result Directory, err error) {
+// GetDirectoryStructureWithDepth returns hierarchical representation of os's directories with given depth,
+// as well as their sizes.
+func GetDirectoryStructureWithDepth(fullpath string, depth int) (result Directory, err error) {
 	var fileSize int64
 	if fileSize, err = GetFullDirSize(fullpath); err != nil {
 		return
 	}
 
 	var currentDir *os.File
+	defer currentDir.Close()
 	if currentDir, err = os.Open(fullpath); err != nil {
 		return
 	}
-	defer currentDir.Close()
 
 	var files []os.FileInfo
 	if files, err = currentDir.Readdir(0); err != nil {
@@ -104,7 +106,7 @@ func getDirectoryStructureWithDepth(fullpath string, depth int) (result Director
 		if v.IsDir() && depth > 0 {
 			var subDir Directory
 			subDirPath := path.Join(fullpath, v.Name())
-			if subDir, err = getDirectoryStructureWithDepth(subDirPath, depth-1); err == nil {
+			if subDir, err = GetDirectoryStructureWithDepth(subDirPath, depth-1); err == nil {
 				directories = append(directories, subDir)
 			} else {
 				return
