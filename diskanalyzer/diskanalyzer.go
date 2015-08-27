@@ -60,8 +60,8 @@ func GetDirectoriesBiggerThan(size int64, root string) (result map[string]string
 	var dirInfo os.FileInfo
 	if dirInfo, err = dir.Stat(); err == nil && dirInfo.IsDir() {
 		var dirSize int64
-		if dirSize, err = GetFullDirSize(root); err == nil && dirSize >= size {
-			result[root] = fmt.Sprintf("%v", dirSize)
+		if dirSize, err = GetFullDirSize(root); err == nil && dirSize >= size*1000 {
+			result[root] = fmt.Sprintf("%v", int64(math.Ceil(float64(dirSize)/1000)))
 			var files []os.FileInfo
 			if files, err = dir.Readdir(0); err == nil {
 				for _, v := range files {

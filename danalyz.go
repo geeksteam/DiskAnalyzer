@@ -17,7 +17,7 @@ var (
 
 	modeLargeFiles = flag.Bool("big-dirs", false, `Big directories mode. Returns all subdirectories of given
 		directory, which size is bigger than given max size (max-size flag).`)
-	maxSize = flag.Int("max-size", 1000, "Files with size bigger than this value are considered as large files.")
+	maxSize = flag.Int("max-size", 2, "Files with size bigger than this value are considered as large files.")
 )
 
 func main() {
