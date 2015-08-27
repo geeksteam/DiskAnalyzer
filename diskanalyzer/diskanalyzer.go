@@ -19,9 +19,9 @@ const (
 
 // Directory type is a os's directory representation for GetDirectoryStructure function.
 type Directory struct {
-	fullpath string
-	size     int64
-	subdirs  []Directory
+	Fullpath string      `json:"path"`
+	Size     int64       `json:"size"`
+	Subdirs  []Directory `json:"sub_dirs"`
 }
 
 // GetFullDirSize - Get Directory size include subdirs
@@ -44,10 +44,11 @@ func combineMaps(from, to *map[string]string) {
 
 // GetLargeDirectories returns a map of directories, which are bigger than maxSize.
 func GetLargeDirectories(root string) (map[string]string, error) {
-	return getDirectoriesBiggerThan(maxSize, root)
+	return GetDirectoriesBiggerThan(maxSize, root)
 }
 
-func getDirectoriesBiggerThan(size int64, root string) (result map[string]string, err error) {
+// GetDirectoriesBiggerThan returns a map of directories, which are bigger than size.
+func GetDirectoriesBiggerThan(size int64, root string) (result map[string]string, err error) {
 	var dir *os.File
 	if dir, err = os.Open(root); err != nil {
 		return
@@ -65,7 +66,7 @@ func getDirectoriesBiggerThan(size int64, root string) (result map[string]string
 			if files, err = dir.Readdir(0); err == nil {
 				for _, v := range files {
 					var subMap map[string]string
-					if subMap, err = getDirectoriesBiggerThan(size, path.Join(root, v.Name())); err == nil {
+					if subMap, err = GetDirectoriesBiggerThan(size, path.Join(root, v.Name())); err == nil {
 						combineMaps(&subMap, &result)
 					}
 				}
