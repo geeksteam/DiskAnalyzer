@@ -35,7 +35,7 @@ func main() {
 		jsonbytes, err = json.Marshal(dir)
 		if err != nil {
 			panic(err)
-		}
+		}}
 	} else if *modeLargeFiles {
 		m, err := diskanalyzer.GetDirectoriesBiggerThan(int64(*maxSize), *path)
 		if err != nil {
