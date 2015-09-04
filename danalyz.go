@@ -26,6 +26,7 @@ func main() {
 		panic("Path flag is required and can't be empty.")
 	}
 	var jsonbytes []byte
+
 	if *modeDirStructure {
 		dir, err := diskanalyzer.GetDirectoryStructureWithDepth(*path, *depth)
 		if err != nil {
