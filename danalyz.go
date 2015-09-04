@@ -31,7 +31,7 @@ func main() {
 		dir, err := diskanalyzer.GetDirectoryStructureWithDepth(*path, *depth)
 		if err != nil {
 			panic(err)
-		}}}
+		}
 		jsonbytes, err = json.Marshal(dir)
 		if err != nil {
 			panic(err)
