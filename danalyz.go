@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/geekbros/DiskAnalyzer/diskanalyzer"
+	"github.com/geeksteam/DiskAnalyzer/diskanalyzer"
 )
 
 var (
