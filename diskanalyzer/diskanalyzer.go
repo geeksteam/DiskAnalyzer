@@ -50,10 +50,10 @@ func GetLargeDirectories(root string) (map[string]string, error) {
 // GetDirectoriesBiggerThan returns a map of directories, which are bigger than size.
 func GetDirectoriesBiggerThan(size int64, root string) (result map[string]string, err error) {
 	var dir *os.File
-	defer dir.Close()
 	if dir, err = os.Open(root); err != nil {
 		return
 	}
+	defer dir.Close()
 
 	result = make(map[string]string)
 
@@ -61,7 +61,11 @@ func GetDirectoriesBiggerThan(size int64, root string) (result map[string]string
 	if dirInfo, err = dir.Stat(); err == nil && dirInfo.IsDir() {
 		var dirSize int64
 		if dirSize, err = GetFullDirSize(root); err == nil && dirSize >= size*1000 {
-			result[root] = fmt.Sprintf("%v", int64(math.Ceil(float64(dirSize)/1000)))
+			// Skipping root directory
+			if root != "/" {
+				result[root] = fmt.Sprintf("%v", int64(math.Ceil(float64(dirSize)/1000)))
+			}
+
 			var files []os.FileInfo
 			if files, err = dir.Readdir(0); err == nil {
 				for _, v := range files {
